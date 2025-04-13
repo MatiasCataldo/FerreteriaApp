@@ -1,0 +1,26 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Listado de Socios{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Listado de Socios</h1>
+
+<form method="get" class="mb-3 row g-2">
+    <div class="col-auto">
+        <input type="text" name="q" class="form-control" placeholder="Buscar por nombre..." value="{{ request.GET.q }}">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </div>
+</form>
+
+{% if socios %}
+    <ul class="list-group">
+        {% for socio in socios %}
+            <li class="list-group-item">{{ socio }}</li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <div class="alert alert-warning">No se encontraron socios.</div>
+{% endif %}
+{% endblock %}

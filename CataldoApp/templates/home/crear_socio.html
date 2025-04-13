@@ -1,0 +1,17 @@
+{% extends 'home/base.html' %}
+
+{% block title %}Crear Socio{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Crear Socio</h1>
+    
+    <form action="{% url 'crear_socio' %}" method="POST" class="row g-3">
+        {% csrf_token %}
+
+        {{ formulario.as_p }}
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-success">Crear</button>
+        </div>
+    </form>
+{% endblock %}
