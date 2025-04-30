@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión | CataldoApp{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center font-weight-light my-4">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            {{ form.non_field_errors|first }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="form-floating mb-3">
+                            <input type="text" name="username" class="form-control" id="id_username" 
+                                   placeholder="Nombre de usuario" required autofocus>
+                            <label for="id_username">
+                                <i class="bi bi-person-fill me-2"></i>Usuario
+                            </label>
+                            {% if form.username.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.username.errors %}
+                                <i class="bi bi-exclamation-circle-fill me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="password" name="password" class="form-control" 
+                                   id="id_password" placeholder="Contraseña" required>
+                            <label for="id_password">
+                                <i class="bi bi-lock-fill me-2"></i>Contraseña
+                            </label>
+                            {% if form.password.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.password.errors %}
+                                <i class="bi bi-exclamation-circle-fill me-1"></i>{{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">
+                                Recordar mi sesión
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">
+                        <a href="">¿Olvidaste tu contraseña?</a>
+                    </div>
+                    <div class="small mt-2">
+                        ¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .form-floating label {
+        padding-left: 2.5rem;
+    }
+    .form-floating i.bi {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .form-control:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h2 class="m-0 font-weight-bold text-primary">
+                <i class="bi bi-box-seam me-2"></i>Listado de Productos
+            </h2>
+            <div>
+                <span class="badge bg-primary rounded-pill fs-6">
+                    <i class="bi bi-box me-1"></i> Total: {{ cantidad_productos }}
+                </span>
+                <a href="{% url 'crear_producto' %}" class="btn btn-success ms-3">
+                    <i class="bi bi-plus-circle me-1"></i> Nuevo Producto
+                </a>
+            </div>
+        </div>
+
+        <div class="card-body">
+            <!-- Barra de búsqueda mejorada -->
+            <form method="GET" class="mb-4">
+                <div class="input-group">
+                    <input type="text" name="busqueda" class="form-control border-primary" 
+                           placeholder="Buscar por nombre, ID o stock..." 
+                           value="{{ request.GET.busqueda }}">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                    <a href="{% url 'listado_de_productos' %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-counterclockwise"></i> Limpiar
+                    </a>
+                </div>
+            </form>
+
+            <!-- Tabla de productos mejorada -->
+            {% if productos %}
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-center"><i class="bi bi-box me-1"></i> Producto</th>
+                            <th class="text-center"><i class="bi bi-upc me-1"></i> ID</th>
+                            <th class="text-center"><i class="bi bi-boxes me-1"></i> Stock</th>
+                            <th class="text-center"><i class="bi bi-calendar me-1"></i> Fecha Ingreso</th>
+                            <th class="text-center"><i class="bi bi-gear me-1"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                        <tr>
+                            <td class="align-middle">{{ producto.nombreProducto }}</td>
+                            <td class="text-center align-middle">{{ producto.idProducto }}</td>
+                            <td class="text-center align-middle">
+                                <span class="badge {% if producto.stock > 10 %}bg-success{% else %}bg-warning text-dark{% endif %} rounded-pill">
+                                    {{ producto.stock }} unidades
+                                </span>
+                            </td>
+                            <td class="text-center align-middle">{{ producto.fechaIngreso|date:"d/m/Y" }}</td>
+                            <td class="text-center align-middle">
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-info btn-sm" 
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Ver detalle">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </a>
+                                    <a href="{% url 'modificar_producto' producto.id %}" class="btn btn-warning btn-sm" 
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Editar">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                    <a href="{% url 'eliminar_producto' producto.id %}" class="btn btn-danger btn-sm" 
+                                       data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            {% if is_paginated %}
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1" aria-label="First">
+                            <span aria-hidden="true">&laquo;&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                            <span aria-hidden="true">&raquo;&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+            {% else %}
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div>
+                    No se encontraron productos. <a href="{% url 'crear_producto' %}" class="alert-link">¿Desea agregar uno?</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Activar tooltips
+document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
+})
+</script>
+{% endblock %}

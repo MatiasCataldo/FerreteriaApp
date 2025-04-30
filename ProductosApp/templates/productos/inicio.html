@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - CataldoApp{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <!-- Hero Section -->
+    <div class="hero-section bg-primary text-white py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-3 fw-bold mb-4">
+                        <i class="bi bi-box-seam me-3"></i>Bienvenido a CataldoApp
+                    </h1>
+                    <p class="lead mb-4">
+                        La solución completa para la gestión de inventarios y productos. 
+                        Simple, potente y diseñado para optimizar tu trabajo diario.
+                    </p>
+                    <div class="d-flex gap-3">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'listado_de_productos' %}" class="btn btn-light btn-lg">
+                                <i class="bi bi-boxes me-2"></i>Ver Productos
+                            </a>
+                            <a href="{% url 'crear_producto' %}" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-plus-circle me-2"></i>Nuevo Producto
+                            </a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-light btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión
+                            </a>
+                            <a href="{% url 'registro' %}" class="btn btn-outline-light btn-lg">
+                                <i class="bi bi-person-plus me-2"></i>Registrarse
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="container py-5">
+        <h2 class="text-center mb-5">
+            <i class="bi bi-stars text-primary me-2"></i>Características Principales
+        </h2>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper bg-primary bg-opacity-10 text-primary rounded-circle mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px;">
+                            <i class="bi bi-list-check fs-3"></i>
+                        </div>
+                        <h3 class="h5">Gestión Completa</h3>
+                        <p class="text-muted">
+                            Administra todos tus productos en un solo lugar con nuestro sistema intuitivo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper bg-success bg-opacity-10 text-success rounded-circle mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px;">
+                            <i class="bi bi-graph-up fs-3"></i>
+                        </div>
+                        <h3 class="h5">Control de Stock</h3>
+                        <p class="text-muted">
+                            Monitorea tus niveles de inventario y recibe alertas cuando el stock sea bajo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="icon-wrapper bg-info bg-opacity-10 text-info rounded-circle mb-3 mx-auto" style="width: 60px; height: 60px; line-height: 60px;">
+                            <i class="bi bi-clock-history fs-3"></i>
+                        </div>
+                        <h3 class="h5">Historial Detallado</h3>
+                        <p class="text-muted">
+                            Accede al historial completo de movimientos y actualizaciones de tus productos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="bg-light py-5">
+        <div class="container text-center py-4">
+            <h2 class="mb-4">¿Listo para optimizar tu gestión de productos?</h2>
+            <a href="{% if user.is_authenticated %}{% url 'crear_producto' %}{% else %}{% url 'registro' %}{% endif %}" 
+               class="btn btn-primary btn-lg px-4">
+                <i class="bi bi-rocket-takeoff me-2"></i>
+                {% if user.is_authenticated %}Crear Primer Producto{% else %}Comenzar Ahora{% endif %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
+    }
+    .icon-wrapper {
+        transition: transform 0.3s ease;
+    }
+    .card:hover .icon-wrapper {
+        transform: scale(1.1);
+    }
+</style>
+{% endblock %}
