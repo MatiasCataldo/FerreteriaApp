@@ -16,11 +16,12 @@ def inicio(request):
 @login_required
 def crear_producto(request):
     if request.method == 'POST':
-        formulario = CreacionProducto(request.POST)
+        formulario = CreacionProducto(request.POST, request.FILES)
         if formulario.is_valid():
             info = formulario.cleaned_data
             producto = Producto(nombreProducto=info.get('nombreProducto'), 
-                        idProducto=info.get('idProducto'), 
+                        idProducto=info.get('idProducto'),
+                        productoImagen=info.get('productoImagen'), 
                         stock=info.get('stock'), 
                         fechaIngreso=info.get('fechaIngreso'))
             producto.save()
@@ -52,7 +53,7 @@ class VistaDetalleProducto(DetailView):
 class VistaModificarProducto(LoginRequiredMixin, UpdateView):
     model = Producto
     template_name = "productos/modificar_producto.html"
-    fields = ["nombreProducto", "idProducto", "stock", "fechaIngreso"]
+    fields = ["nombreProducto", "idProducto", "stock", "fechaIngreso", "productoImagen"]
     success_url = reverse_lazy('listado_de_productos')
 
     def form_valid(self, form):

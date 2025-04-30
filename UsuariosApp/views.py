@@ -54,8 +54,8 @@ def editar_perfil(request):
             formulario.save()
             return redirect("perfil_usuario")
     else:
-        formulario = FormularioEdicionPerfil(initial={'avatar': infoextra.avatar}, instance=request.user)
-    return render(request, "usuarios/editar_perfil.html", {'formulario': formulario})
+        formulario = FormularioEdicionPerfil(initial={'infoextra': infoextra}, instance=request.user)
+    return render(request, "usuarios/editar_perfil.html", {'formulario': formulario, 'infoextra': infoextra})
     
 
 @login_required

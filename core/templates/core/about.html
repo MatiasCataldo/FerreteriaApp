@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Acerca de CataldoApp{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">
+                        <i class="bi bi-info-circle me-2"></i>Acerca de CataldoApp
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">   
+                        <h3 class="mt-3">Sistema de Gestión de Inventario</h3>
+                    </div>
+                    
+                    <div class="about-content">
+                        <p class="lead">{{ descripcion|linebreaks }}</p>
+                        
+                        <hr class="my-4">
+                        
+                        <h4 class="mb-3"><i class="bi bi-feather me-2"></i>Características Principales</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-group list-group-flush mb-4">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Registro completo de productos
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Control de stock en tiempo real
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Gestión de imágenes de productos
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-group list-group-flush mb-4">
+                                    <li class="list-group-item">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Interfaz intuitiva y responsive
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Seguridad y autenticación de usuarios
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>
+                                        Reportes y búsquedas avanzadas
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <small class="text-muted">
+                        Versión 1.0 | Desarrollado con Django y Bootstrap
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,11 +1,217 @@
 {% extends "base.html" %}
-{% block content %}
-<h1>Registro</h1>
-<form method="POST" action="{% url 'registro' %}">
-    {% csrf_token %}
-    
-    {{ formulario.as_p }}
 
-    <button type="submit" class="btn btn-primary">Registrarse</button>
-</form>
-{% endblock content %}
+{% block title %}Registro | CataldoApp{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h3 class="mb-0 text-center">
+                        <i class="bi bi-person-plus me-2"></i>Crear Cuenta
+                    </h3>
+                </div>
+                
+                <div class="card-body p-4">
+                    <form method="POST" action="{% url 'registro' %}" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if formulario.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show mb-4">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            {{ formulario.non_field_errors|first }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endif %}
+
+                        <div class="row g-3">
+                            <!-- Username -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ formulario.username }}
+                                    <label for="{{ formulario.username.id_for_label }}">
+                                        <i class="bi bi-person-fill me-2"></i>Nombre de Usuario
+                                    </label>
+                                    {% if formulario.username.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in formulario.username.errors %}
+                                        <i class="bi bi-exclamation-circle-fill me-1"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Email -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ formulario.email }}
+                                    <label for="{{ formulario.email.id_for_label }}">
+                                        <i class="bi bi-envelope-fill me-2"></i>Correo Electrónico
+                                    </label>
+                                    {% if formulario.email.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in formulario.email.errors %}
+                                        <i class="bi bi-exclamation-circle-fill me-1"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Password 1 -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ formulario.password1 }}
+                                    <label for="{{ formulario.password1.id_for_label }}">
+                                        <i class="bi bi-lock-fill me-2"></i>Contraseña
+                                    </label>
+                                    {% if formulario.password1.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in formulario.password1.errors %}
+                                        <i class="bi bi-exclamation-circle-fill me-1"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                    <small class="text-muted mt-1 d-block">
+                                        Mínimo 8 caracteres con números y letras.
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <!-- Password 2 -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    {{ formulario.password2 }}
+                                    <label for="{{ formulario.password2.id_for_label }}">
+                                        <i class="bi bi-lock-fill me-2"></i>Confirmar Contraseña
+                                    </label>
+                                    {% if formulario.password2.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in formulario.password2.errors %}
+                                        <i class="bi bi-exclamation-circle-fill me-1"></i>{{ error }}
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Términos y condiciones -->
+                        <div class="form-check mb-4">
+                            <input class="form-check-input" type="checkbox" id="acceptTerms" required>
+                            <label class="form-check-label" for="acceptTerms">
+                                Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">términos y condiciones</a>
+                            </label>
+                        </div>
+                        
+                        <!-- Botón de registro -->
+                        <div class="d-grid">
+                            <button class="btn btn-primary btn-lg" type="submit">
+                                <i class="bi bi-person-plus-fill me-2"></i>Registrarse
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <p class="mb-0">¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Términos y Condiciones -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Términos y Condiciones</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+               
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Añadir clases de Bootstrap a los campos
+    const fields = [
+        '{{ formulario.username.id_for_label }}',
+        '{{ formulario.email.id_for_label }}',
+        '{{ formulario.password1.id_for_label }}',
+        '{{ formulario.password2.id_for_label }}'
+    ];
+    
+    fields.forEach(function(fieldId) {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.classList.add('form-control');
+        }
+    });
+    
+    // Validación del formulario
+    const forms = document.querySelectorAll('.needs-validation');
+    Array.from(forms).forEach(function(form) {
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        }, false);
+    });
+    
+    // Mostrar/ocultar contraseña
+    const togglePassword = document.querySelectorAll('.password-toggle');
+    togglePassword.forEach(function(toggle) {
+        toggle.addEventListener('click', function() {
+            const passwordInput = document.getElementById(this.dataset.target);
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.querySelector('i').classList.toggle('bi-eye');
+            this.querySelector('i').classList.toggle('bi-eye-slash');
+        });
+    });
+});
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-floating label {
+        padding-left: 2.5rem;
+    }
+    .form-floating i.bi {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 10;
+    }
+    .password-toggle {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        z-index: 10;
+    }
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+</style>
+{% endblock %}

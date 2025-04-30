@@ -99,7 +99,7 @@
             <a href="{% if user.is_authenticated %}{% url 'crear_producto' %}{% else %}{% url 'registro' %}{% endif %}" 
                class="btn btn-primary btn-lg px-4">
                 <i class="bi bi-rocket-takeoff me-2"></i>
-                {% if user.is_authenticated %}Crear Primer Producto{% else %}Comenzar Ahora{% endif %}
+                {% if user.is_authenticated %}Crear Producto{% else %}Comenzar Ahora{% endif %}
             </a>
         </div>
     </div>
